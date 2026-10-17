@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, List, Avatar, Tag, Typography, Empty, Spin } from 'antd';
-import { SearchOutlined, UserOutlined, ApartmentOutlined, RightOutlined } from '@ant-design/icons';
+import { Modal, Input, List, Avatar, Tag, Typography, Empty, Spin, Button } from 'antd';
+import { SearchOutlined, UserOutlined, ApartmentOutlined, RightOutlined, CloseOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { employeeApi, departmentApi } from '../../api/endpoints';
 
@@ -64,23 +64,31 @@ const GlobalSearchModal = ({ open, onClose }) => {
       onCancel={onClose}
       footer={null}
       closable={false}
-      width={580}
-      style={{ top: 80 }}
+      width="min(560px, calc(100vw - 24px))"
+      style={{ top: 24, margin: '0 auto' }}
       styles={{ body: { padding: '16px' } }}
     >
-      <Input
-        prefix={<SearchOutlined style={{ color: '#0284c7', fontSize: 18, marginRight: 8 }} />}
-        placeholder="Type to search employees, departments, or enter shortcut (ESC to close)..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        autoFocus
-        size="large"
-        style={{
-          borderRadius: 8,
-          marginBottom: 16,
-          fontSize: 15,
-        }}
-      />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+        <Input
+          prefix={<SearchOutlined style={{ color: '#0284c7', fontSize: 16, marginRight: 6 }} />}
+          placeholder="Search employees or departments..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          autoFocus
+          size="middle"
+          style={{
+            borderRadius: 8,
+            fontSize: 14,
+            flex: 1,
+          }}
+        />
+        <Button
+          type="text"
+          icon={<CloseOutlined style={{ fontSize: 15, color: '#94a3b8' }} />}
+          onClick={onClose}
+          aria-label="Close search"
+        />
+      </div>
 
       {loading ? (
         <div style={{ textAlign: 'center', padding: '30px 0' }}>

@@ -52,7 +52,7 @@ const ProfileSettings = () => {
       key: '1',
       label: 'Personal Overview',
       children: (
-        <Descriptions bordered column={2}>
+        <Descriptions bordered column={{ xs: 1, sm: 2 }}>
           <Descriptions.Item label="Full Name">{user?.name}</Descriptions.Item>
           <Descriptions.Item label="Work Email">{user?.email}</Descriptions.Item>
           <Descriptions.Item label="Assigned Role">
@@ -69,7 +69,7 @@ const ProfileSettings = () => {
           <Descriptions.Item label="Designation">
             {user?.employeeProfile?.designation || 'Administrator'}
           </Descriptions.Item>
-          <Descriptions.Item label="Last Login" span={2}>
+          <Descriptions.Item label="Last Login">
             {user?.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Just now'}
           </Descriptions.Item>
         </Descriptions>
@@ -144,7 +144,7 @@ const ProfileSettings = () => {
 
       {/* User Card */}
       <Card className="glass-card">
-        <Space size={20} align="center">
+        <Space size={18} align="center" wrap>
           <Avatar
             size={72}
             src={user?.avatar}

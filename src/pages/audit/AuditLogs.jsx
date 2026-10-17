@@ -137,7 +137,7 @@ const AuditLogs = () => {
 
       {/* Filter Card */}
       <Card className="glass-card" bodyStyle={{ padding: 16 }}>
-        <Space wrap>
+        <div className="filter-bar-responsive">
           <Input
             prefix={<SearchOutlined style={{ color: '#94a3b8' }} />}
             placeholder="Search by actor name or action..."
@@ -145,7 +145,7 @@ const AuditLogs = () => {
             onChange={(e) => setSearch(e.target.value)}
             onPressEnter={handleSearch}
             allowClear
-            style={{ width: 280 }}
+            style={{ minWidth: 240, flex: '1 1 240px' }}
           />
 
           <Select
@@ -156,7 +156,7 @@ const AuditLogs = () => {
               setPage(1);
             }}
             allowClear
-            style={{ width: 180 }}
+            style={{ minWidth: 160, flex: '1 1 160px' }}
           >
             {[
               'Auth',
@@ -175,10 +175,10 @@ const AuditLogs = () => {
             ))}
           </Select>
 
-          <Button type="primary" onClick={handleSearch}>
+          <Button type="primary" onClick={handleSearch} style={{ minWidth: 100 }}>
             Filter Logs
           </Button>
-        </Space>
+        </div>
       </Card>
 
       {/* Audit Table */}
@@ -188,6 +188,7 @@ const AuditLogs = () => {
           dataSource={logs}
           rowKey="_id"
           loading={loading}
+          scroll={{ x: 750 }}
           pagination={{
             current: page,
             pageSize: 15,
@@ -203,6 +204,7 @@ const AuditLogs = () => {
         title={`Audit Event: ${selectedDetails?.action}`}
         open={detailsModalOpen}
         onCancel={() => setDetailsModalOpen(false)}
+        width="min(560px, calc(100vw - 24px))"
         footer={[
           <Button key="ok" type="primary" onClick={() => setDetailsModalOpen(false)}>
             Close

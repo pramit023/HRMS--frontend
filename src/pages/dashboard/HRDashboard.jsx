@@ -244,7 +244,7 @@ const HRDashboard = () => {
 
       {/* Pending Leave Requests */}
       <Card className="glass-card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
           <div>
             <Title level={5} style={{ margin: 0, fontWeight: 700, fontSize: 15 }}>
               Leave Requests Awaiting Approval
@@ -265,6 +265,7 @@ const HRDashboard = () => {
           rowKey="_id"
           pagination={false}
           size="middle"
+          scroll={{ x: 650 }}
           locale={{ emptyText: 'No pending leave applications' }}
         />
       </Card>
@@ -372,6 +373,7 @@ const HRDashboard = () => {
       <Modal
         title="Reject Leave Application"
         open={rejectModalOpen}
+        width="min(480px, calc(100vw - 24px))"
         onCancel={() => {
           setRejectModalOpen(false);
           setRejectReason('');

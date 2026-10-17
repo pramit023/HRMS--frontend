@@ -295,6 +295,7 @@ const DepartmentList = () => {
           dataSource={departments}
           rowKey="_id"
           pagination={false}
+          scroll={{ x: 750 }}
           locale={{ emptyText: 'No departments configured yet' }}
         />
       </Card>
@@ -307,6 +308,7 @@ const DepartmentList = () => {
         onOk={handleSubmit}
         confirmLoading={submitting}
         okText={editingDept ? 'Update Department' : 'Create Department'}
+        width="min(560px, calc(100vw - 24px))"
       >
         <Form form={form} layout="vertical" style={{ marginTop: 12 }}>
           <Form.Item
@@ -318,7 +320,7 @@ const DepartmentList = () => {
           </Form.Item>
 
           <Row gutter={16}>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item
                 name="code"
                 label="Department Code"
@@ -327,7 +329,7 @@ const DepartmentList = () => {
                 <Input placeholder="e.g. ENG" />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item name="location" label="Physical Location">
                 <Input placeholder="e.g. Tower A - Floor 4" />
               </Form.Item>

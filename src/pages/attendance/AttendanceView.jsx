@@ -412,12 +412,13 @@ const AttendanceView = () => {
                   <Option value="On Leave">On Leave</Option>
                 </Select>
               </Col>
-              <Col xs={24} md={7} style={{ textAlign: 'right' }}>
+              <Col xs={24} md={7} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                 <Button
                   type="default"
                   icon={<DownloadOutlined />}
                   href={`/api/reports/attendance?format=excel&startDate=${dailyDate.format('YYYY-MM-DD')}&endDate=${dailyDate.format('YYYY-MM-DD')}`}
                   target="_blank"
+                  style={{ width: '100%' }}
                 >
                   Export Daily Excel
                 </Button>
@@ -432,6 +433,7 @@ const AttendanceView = () => {
               dataSource={dailyData}
               rowKey={(r) => r.employee?._id}
               loading={dailyLoading}
+              scroll={{ x: 680 }}
               pagination={{ pageSize: 10 }}
             />
           </Card>
@@ -518,6 +520,7 @@ const AttendanceView = () => {
             dataSource={historyRecords}
             rowKey="_id"
             loading={historyLoading}
+            scroll={{ x: 600 }}
             pagination={{ pageSize: 12 }}
             locale={{ emptyText: 'No attendance records for selected period' }}
           />
@@ -636,6 +639,7 @@ const AttendanceView = () => {
       <Modal
         title={`Adjust Attendance: ${selectedEmployee?.fullName}`}
         open={adjustModalOpen}
+        width="min(500px, calc(100vw - 24px))"
         onCancel={() => setAdjustModalOpen(false)}
         onOk={handleSaveAdjust}
         confirmLoading={adjustSubmitting}

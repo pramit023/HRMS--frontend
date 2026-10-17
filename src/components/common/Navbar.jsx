@@ -14,6 +14,7 @@ import {
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  MenuOutlined,
   SearchOutlined,
   BellOutlined,
   SunOutlined,
@@ -33,7 +34,13 @@ import { useNavigate } from 'react-router-dom';
 const { Header } = Layout;
 const { Text } = Typography;
 
-const Navbar = ({ collapsed, setCollapsed }) => {
+const Navbar = ({
+  collapsed,
+  setCollapsed,
+  isMobile = false,
+  mobileOpen = false,
+  setMobileOpen,
+}) => {
   const { user, logout } = useAuth();
   const { isDarkMode, toggleTheme } = useTheme();
   const { latestNotification } = useSocket();
@@ -123,7 +130,7 @@ const Navbar = ({ collapsed, setCollapsed }) => {
   };
 
   const notificationContent = (
-    <div style={{ width: 320 }}>
+    <div style={{ width: '100%', maxWidth: 320 }}>
       <div
         style={{
           display: 'flex',
@@ -209,29 +216,88 @@ const Navbar = ({ collapsed, setCollapsed }) => {
     },
   ];
 
+  const handleToggleClick = () => {
+    if (isMobile) {
+      if (setMobileOpen) setMobileOpen(!mobileOpen);
+    } else {
+      if (setCollapsed) setCollapsed(!collapsed);
+    }
+  };
+
   return (
     <Header className="enterprise-navbar">
-      <Space size={14} align="center">
+      <Space size={10} align="center">
         <Button
           className="nav-icon-btn"
           type="text"
-          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          onClick={() => setCollapsed(!collapsed)}
+          icon={
+            isMobile
+              ? mobileOpen
+                ? <MenuFoldOutlined />
+                : <MenuOutlined />
+              : collapsed
+              ? <MenuUnfoldOutlined />
+              : <MenuFoldOutlined />
+          }
+          onClick={handleToggleClick}
+          aria-label="Toggle navigation"
         />
 
-        {/* Global Search trigger pill */}
+        {/* Mobile Brand Name & Icon */}
+        {isMobile && (
+          <div
+            style={{ display: 'flex', alignItems: 'center', gap: 7, cursor: 'pointer', userSelect: 'none' }}
+            onClick={() => {
+              if (user?.role === 'Super Admin') navigate('/dashboard/super-admin');
+              else if (user?.role === 'HR Manager' || user?.role === 'HR Admin') navigate('/dashboard/hr');
+              else navigate('/dashboard/employee');
+            }}
+          >
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: 8,
+                background: 'linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #ec4899 100%)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 800,
+                fontSize: 13,
+                boxShadow: '0 2px 6px rgba(37, 99, 235, 0.3)',
+              }}
+            >
+              N
+            </div>
+            <span style={{ fontWeight: 700, fontSize: 15, letterSpacing: '-0.02em', color: 'var(--text-main)' }}>
+              Nexus
+            </span>
+          </div>
+        )}
+
+        {/* Desktop Global Search Trigger Pill */}
         <Button
           type="default"
-          className="nav-search-btn"
+          className="nav-search-btn nav-search-desktop"
           icon={<SearchOutlined style={{ fontSize: 13 }} />}
           onClick={() => setSearchOpen(true)}
         >
           <span>Search modules...</span>
           <span className="nav-search-badge">⌘K</span>
         </Button>
+
+        {/* Mobile Compact Search Trigger Icon Button */}
+        <Button
+          type="text"
+          className="nav-icon-btn nav-search-mobile"
+          icon={<SearchOutlined style={{ fontSize: 15 }} />}
+          onClick={() => setSearchOpen(true)}
+          title="Search modules"
+        />
       </Space>
 
-      <Space size={12} align="center">
+      <Space size={8} align="center">
         {/* Attendance Check-in Widget (if employee) */}
         {user?.employeeProfile && (
           <div style={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -242,7 +308,7 @@ const Navbar = ({ collapsed, setCollapsed }) => {
                 icon={<ClockCircleOutlined />}
                 loading={clockLoading}
                 onClick={handleCheckIn}
-                style={{ fontSize: 12, height: 30 }}
+                style={{ fontSize: 11, height: 28, padding: '0 10px', borderRadius: 6 }}
               >
                 Clock In
               </Button>
@@ -252,14 +318,14 @@ const Navbar = ({ collapsed, setCollapsed }) => {
                 size="small"
                 loading={clockLoading}
                 onClick={handleCheckOut}
-                style={{ fontSize: 12, height: 30 }}
+                style={{ fontSize: 11, height: 28, padding: '0 10px', borderRadius: 6 }}
               >
                 Clock Out
               </Button>
             ) : (
-              <span className="nav-shift-done-pill">
+              <span className="nav-shift-done-pill" style={{ padding: '2px 8px', fontSize: 11 }}>
                 <CheckCircleOutlined style={{ color: '#10b981' }} />
-                <span>Shift Completed</span>
+                <span>Shift Done</span>
               </span>
             )}
           </div>
@@ -270,12 +336,14 @@ const Navbar = ({ collapsed, setCollapsed }) => {
           content={notificationContent}
           trigger="click"
           placement="bottomRight"
+          overlayClassName="mobile-responsive-popover"
         >
           <Badge count={unreadCount} size="small" offset={[-2, 4]}>
             <Button
               type="text"
               className="nav-icon-btn"
               icon={<BellOutlined style={{ fontSize: 16 }} />}
+              aria-label="Notifications"
             />
           </Badge>
         </Popover>
@@ -286,6 +354,7 @@ const Navbar = ({ collapsed, setCollapsed }) => {
           className="nav-icon-btn"
           icon={isDarkMode ? <SunOutlined style={{ fontSize: 15 }} /> : <MoonOutlined style={{ fontSize: 15 }} />}
           onClick={toggleTheme}
+          aria-label="Toggle theme"
         />
 
         {/* User Dropdown */}

@@ -185,8 +185,8 @@ const ReportsHub = () => {
                   ))}
                 </Select>
               </Col>
-              <Col xs={12} sm={8} style={{ textAlign: 'right' }}>
-                <Space>
+              <Col xs={24} sm={8}>
+                <Space wrap style={{ width: '100%', justifyContent: 'flex-start' }}>
                   <Button type="primary" onClick={fetchAttReport}>
                     Query
                   </Button>
@@ -214,6 +214,7 @@ const ReportsHub = () => {
               dataSource={attData}
               rowKey={(r, i) => i}
               loading={loading}
+              scroll={{ x: 700 }}
               pagination={{ pageSize: 10 }}
               locale={{ emptyText: 'No attendance data found for parameters' }}
             />
@@ -288,6 +289,7 @@ const ReportsHub = () => {
               dataSource={leaveData}
               rowKey={(r, i) => i}
               loading={loading}
+              scroll={{ x: 700 }}
               pagination={{ pageSize: 10 }}
               locale={{ emptyText: 'No leave data found' }}
             />
@@ -340,7 +342,7 @@ const ReportsHub = () => {
                 </Select>
               </Col>
               <Col xs={24} sm={12} style={{ textAlign: 'right' }}>
-                <Space>
+                <Space wrap>
                   <Button type="primary" onClick={fetchPayReport}>
                     Query
                   </Button>
@@ -367,6 +369,7 @@ const ReportsHub = () => {
               dataSource={payData}
               rowKey={(r, i) => i}
               loading={loading}
+              scroll={{ x: 700 }}
               pagination={{ pageSize: 10 }}
               locale={{ emptyText: 'No payroll data found for period' }}
             />
@@ -402,6 +405,7 @@ const ReportsHub = () => {
               dataSource={empData}
               rowKey={(r, i) => i}
               loading={loading}
+              scroll={{ x: 700 }}
               pagination={{ pageSize: 10 }}
             />
           </Card>

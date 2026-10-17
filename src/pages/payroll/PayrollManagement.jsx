@@ -342,12 +342,12 @@ const PayrollManagement = () => {
 
       {/* Filters */}
       <Card className="glass-card" bodyStyle={{ padding: 14 }}>
-        <Space wrap size={12}>
+        <div className="filter-bar-responsive">
           <Select
             placeholder="Select Month"
             value={selectedMonth}
             onChange={(m) => setSelectedMonth(m)}
-            style={{ width: 140 }}
+            style={{ minWidth: 140, flex: '1 1 140px' }}
           >
             {monthsList.map((m, idx) => (
               <Option key={idx + 1} value={idx + 1}>
@@ -360,7 +360,7 @@ const PayrollManagement = () => {
             placeholder="Select Year"
             value={selectedYear}
             onChange={(y) => setSelectedYear(y)}
-            style={{ width: 100 }}
+            style={{ minWidth: 100, flex: '1 1 100px' }}
           >
             {[2024, 2025, 2026].map((yr) => (
               <Option key={yr} value={yr}>
@@ -374,12 +374,12 @@ const PayrollManagement = () => {
             value={selectedStatus || undefined}
             onChange={(s) => setSelectedStatus(s)}
             allowClear
-            style={{ width: 140 }}
+            style={{ minWidth: 140, flex: '1 1 140px' }}
           >
             <Option value="Paid">Paid</Option>
             <Option value="Pending">Pending</Option>
           </Select>
-        </Space>
+        </div>
       </Card>
 
       {/* Table */}
@@ -389,6 +389,7 @@ const PayrollManagement = () => {
           dataSource={payrolls}
           rowKey="_id"
           loading={loading}
+          scroll={{ x: 800 }}
           pagination={{
             current: page,
             pageSize: 10,
@@ -405,6 +406,7 @@ const PayrollManagement = () => {
         open={generateModalOpen}
         onCancel={() => setGenerateModalOpen(false)}
         footer={null}
+        width="min(560px, calc(100vw - 24px))"
       >
         <Form
           form={generateForm}
@@ -494,11 +496,11 @@ const PayrollManagement = () => {
             Close
           </Button>,
         ]}
-        width={650}
+        width="min(650px, calc(100vw - 24px))"
       >
         {selectedPayroll && (
           <div>
-            <Descriptions bordered column={2} size="small" style={{ marginBottom: 16 }}>
+            <Descriptions bordered column={{ xs: 1, sm: 2 }} size="small" style={{ marginBottom: 16 }}>
               <Descriptions.Item label="Employee">
                 {selectedPayroll.employee?.fullName} ({selectedPayroll.employee?.employeeId})
               </Descriptions.Item>
@@ -515,8 +517,8 @@ const PayrollManagement = () => {
               </Descriptions.Item>
             </Descriptions>
 
-            <Row gutter={16}>
-              <Col span={12}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={12}>
                 <Card size="small" title="Earnings Breakdown" style={{ background: isDarkMode ? '#0d1929' : '#f0f9ff', borderColor: isDarkMode ? '#1e3a5f' : '#bae6fd' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: 13 }}>
                     <span>Basic Salary:</span>
@@ -542,7 +544,7 @@ const PayrollManagement = () => {
                 </Card>
               </Col>
 
-              <Col span={12}>
+              <Col xs={24} sm={12}>
                 <Card size="small" title="Deductions Breakdown" style={{ background: isDarkMode ? '#221115' : '#fef2f2', borderColor: isDarkMode ? '#4a151b' : '#fecaca' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: 13 }}>
                     <span>Income Tax (TDS):</span>
@@ -575,6 +577,8 @@ const PayrollManagement = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: 8,
               }}
             >
               <div>
@@ -596,15 +600,16 @@ const PayrollManagement = () => {
         onCancel={() => setEditModalOpen(false)}
         onOk={handleSaveEdit}
         confirmLoading={editSubmitting}
+        width="min(540px, calc(100vw - 24px))"
       >
         <Form form={editForm} layout="vertical" style={{ marginTop: 12 }}>
           <Row gutter={16}>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item name="bonus" label="Bonus Amount ($)">
                 <InputNumber style={{ width: '100%' }} min={0} />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item name="otherDeductions" label="Other Deductions ($)">
                 <InputNumber style={{ width: '100%' }} min={0} />
               </Form.Item>

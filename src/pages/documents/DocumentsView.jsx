@@ -378,6 +378,7 @@ const DocumentsView = () => {
           dataSource={documents}
           rowKey="_id"
           loading={loading}
+          scroll={{ x: 720 }}
           pagination={{ pageSize: 8 }}
         />
       </Card>
@@ -389,6 +390,7 @@ const DocumentsView = () => {
         onCancel={() => setUploadModalOpen(false)}
         footer={null}
         destroyOnClose
+        width="min(560px, calc(100vw - 24px))"
       >
         <Form form={uploadForm} layout="vertical" onFinish={handleUploadSubmit}>
           <Form.Item

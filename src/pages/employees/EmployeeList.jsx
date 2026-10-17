@@ -255,7 +255,7 @@ const EmployeeList = () => {
 
       {/* Clean Filters Bar */}
       <Card className="glass-card" bodyStyle={{ padding: 14 }}>
-        <Space wrap size={12}>
+        <div className="filter-bar-responsive">
           <Input
             prefix={<SearchOutlined style={{ color: '#94a3b8' }} />}
             placeholder="Search by name, ID, or email..."
@@ -263,7 +263,7 @@ const EmployeeList = () => {
             onChange={(e) => setSearch(e.target.value)}
             onPressEnter={handleSearch}
             allowClear
-            style={{ width: 260 }}
+            style={{ minWidth: 200, flex: '1 1 200px' }}
           />
 
           <Select
@@ -274,7 +274,7 @@ const EmployeeList = () => {
               setPage(1);
             }}
             allowClear
-            style={{ width: 190 }}
+            style={{ minWidth: 160, flex: '1 1 160px' }}
           >
             {departments.map((d) => (
               <Option key={d._id} value={d._id}>
@@ -291,17 +291,17 @@ const EmployeeList = () => {
               setPage(1);
             }}
             allowClear
-            style={{ width: 150 }}
+            style={{ minWidth: 130, flex: '1 1 130px' }}
           >
             <Option value="Active">Active</Option>
             <Option value="Inactive">Inactive</Option>
             <Option value="On Leave">On Leave</Option>
           </Select>
 
-          <Button type="primary" ghost onClick={handleSearch}>
+          <Button type="primary" ghost onClick={handleSearch} style={{ minWidth: 80 }}>
             Filter
           </Button>
-        </Space>
+        </div>
       </Card>
 
       {/* Employees Table */}
@@ -311,6 +311,7 @@ const EmployeeList = () => {
           dataSource={employees}
           rowKey="_id"
           loading={loading}
+          scroll={{ x: 750 }}
           pagination={{
             current: page,
             pageSize: limit,

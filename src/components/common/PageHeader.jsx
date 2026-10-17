@@ -6,23 +6,11 @@ const PageHeader = ({ title, subtitle, extra }) => {
   const { isDarkMode } = useTheme();
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: 16,
-        marginBottom: 20,
-      }}
-    >
-      <div>
+    <div className="page-header-container">
+      <div className="page-header-text">
         <h1
+          className="page-header-title"
           style={{
-            margin: 0,
-            fontSize: 22,
-            fontWeight: 700,
-            letterSpacing: '-0.025em',
             color: isDarkMode ? '#f8fafc' : '#0f172a',
           }}
         >
@@ -30,9 +18,8 @@ const PageHeader = ({ title, subtitle, extra }) => {
         </h1>
         {subtitle && (
           <p
+            className="page-header-subtitle"
             style={{
-              margin: '3px 0 0 0',
-              fontSize: 13,
               color: isDarkMode ? '#94a3b8' : '#64748b',
             }}
           >
@@ -41,7 +28,13 @@ const PageHeader = ({ title, subtitle, extra }) => {
         )}
       </div>
 
-      {extra && <Space wrap size={10}>{extra}</Space>}
+      {extra && (
+        <div className="page-header-extra">
+          <Space wrap size={8}>
+            {extra}
+          </Space>
+        </div>
+      )}
     </div>
   );
 };

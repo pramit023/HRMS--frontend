@@ -315,7 +315,7 @@ const EmployeeDetails = () => {
       label: `Documents (${employee.documents?.length || 0})`,
       children: (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
             <Text type="secondary">Enterprise onboarding contracts, ID verifications, and compliance forms</Text>
             {(isSuperAdmin || isHR) && (
               <Button type="primary" icon={<UploadOutlined />} onClick={() => setDocModalOpen(true)}>
@@ -328,6 +328,7 @@ const EmployeeDetails = () => {
             dataSource={employee.documents || []}
             rowKey="_id"
             pagination={false}
+            scroll={{ x: 550 }}
             locale={{ emptyText: 'No employee documents uploaded yet' }}
           />
         </div>
@@ -342,6 +343,7 @@ const EmployeeDetails = () => {
           dataSource={attendance}
           rowKey="_id"
           pagination={{ pageSize: 8 }}
+          scroll={{ x: 600 }}
           locale={{ emptyText: 'No attendance records found' }}
         />
       ),
@@ -440,6 +442,7 @@ const EmployeeDetails = () => {
       <Modal
         title="Upload Employee Document"
         open={docModalOpen}
+        width="min(500px, calc(100vw - 24px))"
         onCancel={() => {
           setDocModalOpen(false);
           setDocFile(null);

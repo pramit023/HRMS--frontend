@@ -433,6 +433,7 @@ const EmployeeDashboard = () => {
           rowKey="_id"
           pagination={false}
           size="middle"
+          scroll={{ x: 650 }}
           locale={{ emptyText: 'No salary records generated yet' }}
         />
       </Card>
@@ -442,6 +443,7 @@ const EmployeeDashboard = () => {
         title="Submit Time-Off Application"
         open={leaveModalOpen}
         onCancel={() => setLeaveModalOpen(false)}
+        width="min(520px, calc(100vw - 24px))"
         footer={null}
       >
         <Form form={leaveForm} layout="vertical" onFinish={handleApplyLeave}>

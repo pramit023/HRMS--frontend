@@ -260,6 +260,7 @@ const PerformanceReviews = () => {
           dataSource={reviews}
           rowKey="_id"
           loading={loading}
+          scroll={{ x: 700 }}
           pagination={{ pageSize: 8 }}
           locale={{ emptyText: 'No performance reviews recorded' }}
         />
@@ -271,7 +272,7 @@ const PerformanceReviews = () => {
         open={modalOpen}
         onCancel={() => setModalOpen(false)}
         footer={null}
-        width={680}
+        width="min(680px, calc(100vw - 24px))"
       >
         <Form
           form={form}
@@ -290,7 +291,7 @@ const PerformanceReviews = () => {
           style={{ marginTop: 12 }}
         >
           <Row gutter={16}>
-            <Col span={14}>
+            <Col xs={24} sm={14}>
               <Form.Item
                 name="employeeId"
                 label="Select Employee"
@@ -305,7 +306,7 @@ const PerformanceReviews = () => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={10}>
+            <Col xs={24} sm={10}>
               <Form.Item
                 name="reviewPeriod"
                 label="Review Period"
@@ -393,7 +394,7 @@ const PerformanceReviews = () => {
             Close
           </Button>,
         ]}
-        width={600}
+        width="min(600px, calc(100vw - 24px))"
       >
         {selectedReview && (
           <div style={{ marginTop: 12 }}>

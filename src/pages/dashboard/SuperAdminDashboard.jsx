@@ -328,7 +328,7 @@ const SuperAdminDashboard = () => {
 
       {/* Security & Audit Feed */}
       <Card className="glass-card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
           <Space>
             <SafetyCertificateOutlined style={{ color: '#2563eb', fontSize: 16 }} />
             <div>
@@ -352,6 +352,7 @@ const SuperAdminDashboard = () => {
           rowKey="_id"
           pagination={false}
           size="middle"
+          scroll={{ x: 600 }}
           locale={{ emptyText: 'No recent audit events' }}
         />
       </Card>

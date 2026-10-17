@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Typography, Avatar } from 'antd';
+import { Layout, Menu, Typography, Avatar, Drawer, Button } from 'antd';
 import {
   DashboardOutlined,
   TeamOutlined,
@@ -16,6 +16,7 @@ import {
   FolderOpenOutlined,
   LogoutOutlined,
   ThunderboltFilled,
+  CloseOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -138,7 +139,7 @@ const createNavItem = (key, label) => {
   };
 };
 
-const Sidebar = ({ collapsed }) => {
+const Sidebar = ({ collapsed, isMobile = false, mobileOpen = false, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
@@ -153,7 +154,7 @@ const Sidebar = ({ collapsed }) => {
         {
           key: 'grp-dashboards',
           type: 'group',
-          label: collapsed ? null : 'Executive Overview',
+          label: (collapsed && !isMobile) ? null : 'Executive Overview',
           children: [
             createNavItem('/dashboard/super-admin', 'Enterprise Dashboard'),
             createNavItem('/dashboard/hr', 'HR Operations'),
@@ -163,7 +164,7 @@ const Sidebar = ({ collapsed }) => {
         {
           key: 'grp-workforce',
           type: 'group',
-          label: collapsed ? null : 'Workforce & People',
+          label: (collapsed && !isMobile) ? null : 'Workforce & People',
           children: [
             createNavItem('/employees', 'Employee Directory'),
             createNavItem('/departments', 'Departments'),
@@ -176,7 +177,7 @@ const Sidebar = ({ collapsed }) => {
         {
           key: 'grp-management',
           type: 'group',
-          label: collapsed ? null : 'Finance & Governance',
+          label: (collapsed && !isMobile) ? null : 'Finance & Governance',
           children: [
             createNavItem('/payroll', 'Payroll Management'),
             createNavItem('/performance', 'Performance & KPIs'),
@@ -193,7 +194,7 @@ const Sidebar = ({ collapsed }) => {
         {
           key: 'grp-dashboards',
           type: 'group',
-          label: collapsed ? null : 'Overview',
+          label: (collapsed && !isMobile) ? null : 'Overview',
           children: [
             createNavItem('/dashboard/hr', 'HR Dashboard'),
             createNavItem('/dashboard/employee', 'My Portal'),
@@ -202,7 +203,7 @@ const Sidebar = ({ collapsed }) => {
         {
           key: 'grp-people',
           type: 'group',
-          label: collapsed ? null : 'People & Operations',
+          label: (collapsed && !isMobile) ? null : 'People & Operations',
           children: [
             createNavItem('/employees', 'Employee Directory'),
             createNavItem('/departments', 'Departments'),
@@ -215,7 +216,7 @@ const Sidebar = ({ collapsed }) => {
         {
           key: 'grp-finance',
           type: 'group',
-          label: collapsed ? null : 'Compensations & Reviews',
+          label: (collapsed && !isMobile) ? null : 'Compensations & Reviews',
           children: [
             createNavItem('/payroll', 'Payroll & Salaries'),
             createNavItem('/performance', 'Performance Reviews'),
@@ -231,7 +232,7 @@ const Sidebar = ({ collapsed }) => {
       {
         key: 'grp-employee',
         type: 'group',
-        label: collapsed ? null : 'My Workspace',
+        label: (collapsed && !isMobile) ? null : 'My Workspace',
         children: [
           createNavItem('/dashboard/employee', 'My Dashboard'),
           createNavItem('/attendance', 'My Attendance'),
@@ -251,69 +252,72 @@ const Sidebar = ({ collapsed }) => {
 
   const handleMenuClick = ({ key }) => {
     navigate(key);
+    if (isMobile && onClose) {
+      onClose();
+    }
   };
 
-  return (
-    <Sider
-      trigger={null}
-      collapsible
-      collapsed={collapsed}
-      width={256}
-      collapsedWidth={74}
-      className="enterprise-sidebar"
-      style={{
-        height: '100vh',
-        position: 'sticky',
-        top: 0,
-        left: 0,
-        zIndex: 101,
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+  const renderContent = () => (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Brand Header */}
       <div
         className="sidebar-brand-box"
+        style={{ justifyContent: 'space-between' }}
         onClick={() => {
           if (user?.role === 'Super Admin') navigate('/dashboard/super-admin');
           else if (user?.role === 'HR Manager' || user?.role === 'HR Admin') navigate('/dashboard/hr');
           else navigate('/dashboard/employee');
+          if (isMobile && onClose) onClose();
         }}
       >
-        <div className="sidebar-brand-icon">
-          <span>N</span>
-        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div className="sidebar-brand-icon">
+            <span>N</span>
+          </div>
 
-        {!collapsed && (
-          <div style={{ lineHeight: 1.25, overflow: 'hidden' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {(!collapsed || isMobile) && (
+            <div style={{ lineHeight: 1.25, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 700,
+                    letterSpacing: '-0.02em',
+                    color: 'var(--text-main)',
+                    display: 'block',
+                  }}
+                >
+                  Nexus HRMS
+                </span>
+                <span className="brand-badge-pro">
+                  <ThunderboltFilled style={{ fontSize: 9, marginRight: 2 }} />
+                  PRO
+                </span>
+              </div>
               <span
                 style={{
-                  fontSize: 15,
-                  fontWeight: 700,
-                  letterSpacing: '-0.02em',
-                  color: 'var(--text-main)',
+                  fontSize: 11,
+                  color: 'var(--text-dim)',
                   display: 'block',
+                  fontWeight: 500,
                 }}
               >
-                Nexus HRMS
-              </span>
-              <span className="brand-badge-pro">
-                <ThunderboltFilled style={{ fontSize: 9, marginRight: 2 }} />
-                PRO
+                Enterprise Workforce
               </span>
             </div>
-            <span
-              style={{
-                fontSize: 11,
-                color: 'var(--text-dim)',
-                display: 'block',
-                fontWeight: 500,
-              }}
-            >
-              Enterprise Workforce
-            </span>
-          </div>
+          )}
+        </div>
+
+        {/* Mobile Close Button */}
+        {isMobile && (
+          <Button
+            type="text"
+            icon={<CloseOutlined style={{ fontSize: 16, color: 'var(--text-muted)' }} />}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onClose) onClose();
+            }}
+          />
         )}
       </div>
 
@@ -336,7 +340,7 @@ const Sidebar = ({ collapsed }) => {
       </div>
 
       {/* User Footer Summary */}
-      {!collapsed && (
+      {(!collapsed || isMobile) && (
         <div style={{ padding: '0 10px 12px 10px' }}>
           <div
             className="sidebar-user-card"
@@ -348,7 +352,10 @@ const Sidebar = ({ collapsed }) => {
           >
             <div
               style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', overflow: 'hidden' }}
-              onClick={() => navigate('/settings')}
+              onClick={() => {
+                navigate('/settings');
+                if (isMobile && onClose) onClose();
+              }}
             >
               <div style={{ position: 'relative' }}>
                 <Avatar
@@ -411,11 +418,58 @@ const Sidebar = ({ collapsed }) => {
               onClick={() => {
                 logout();
                 navigate('/login');
+                if (isMobile && onClose) onClose();
               }}
             />
           </div>
         </div>
       )}
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer
+        placement="left"
+        open={mobileOpen}
+        onClose={onClose}
+        width={280}
+        closable={false}
+        className="mobile-sidebar-drawer"
+        styles={{
+          body: {
+            padding: 0,
+            height: '100%',
+          },
+          header: {
+            display: 'none',
+          },
+        }}
+      >
+        {renderContent()}
+      </Drawer>
+    );
+  }
+
+  return (
+    <Sider
+      trigger={null}
+      collapsible
+      collapsed={collapsed}
+      width={256}
+      collapsedWidth={74}
+      className="enterprise-sidebar"
+      style={{
+        height: '100vh',
+        position: 'sticky',
+        top: 0,
+        left: 0,
+        zIndex: 101,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {renderContent()}
     </Sider>
   );
 };

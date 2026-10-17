@@ -392,6 +392,7 @@ const TasksView = () => {
           dataSource={tasks}
           rowKey="_id"
           loading={loading}
+          scroll={{ x: 750 }}
           pagination={{ pageSize: 8 }}
         />
       </Card>
@@ -403,6 +404,7 @@ const TasksView = () => {
         onCancel={() => setCreateModalOpen(false)}
         footer={null}
         destroyOnClose
+        width="min(560px, calc(100vw - 24px))"
       >
         <Form form={createForm} layout="vertical" onFinish={handleCreateTask}>
           <Form.Item
@@ -477,6 +479,7 @@ const TasksView = () => {
         onCancel={() => setProgressModalOpen(false)}
         footer={null}
         destroyOnClose
+        width="min(500px, calc(100vw - 24px))"
       >
         <Form form={progressForm} layout="vertical" onFinish={handleUpdateProgress}>
           <Form.Item name="progress" label="Completion Percentage (%)">

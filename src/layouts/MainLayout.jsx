@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../components/common/Sidebar';
 import Navbar from '../components/common/Navbar';
 import Breadcrumbs from '../components/common/Breadcrumbs';
@@ -10,42 +10,70 @@ const { Content, Footer } = Layout;
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const { isDarkMode } = useTheme();
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 992;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setMobileOpen(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Automatically close mobile menu on route change
+  useEffect(() => {
+    if (isMobile) {
+      setMobileOpen(false);
+    }
+  }, [location.pathname, isMobile]);
 
   return (
     <Layout style={{ minHeight: '100vh', background: isDarkMode ? '#0b0f19' : '#f8fafc' }}>
-      <Sidebar collapsed={collapsed} />
-      <Layout style={{ background: isDarkMode ? '#0b0f19' : '#f8fafc' }}>
-        <Navbar collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Sidebar
+        collapsed={collapsed}
+        isMobile={isMobile}
+        mobileOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+      />
+      <Layout style={{ background: isDarkMode ? '#0b0f19' : '#f8fafc', minWidth: 0, overflow: 'hidden' }}>
+        <Navbar
+          collapsed={collapsed}
+          setCollapsed={setCollapsed}
+          isMobile={isMobile}
+          mobileOpen={mobileOpen}
+          setMobileOpen={setMobileOpen}
+        />
         <Content
+          className="main-content-layout"
           style={{
-            padding: '24px 28px',
             minHeight: 'calc(100vh - 120px)',
             maxWidth: 1600,
             width: '100%',
             margin: '0 auto',
           }}
         >
-          <Breadcrumbs />
+          <div className="breadcrumb-wrapper">
+            <Breadcrumbs />
+          </div>
           <Outlet />
         </Content>
         <Footer
+          className="main-footer-layout"
           style={{
-            textAlign: 'center',
-            background: 'transparent',
             color: isDarkMode ? '#64748b' : '#94a3b8',
-            fontSize: 12,
-            padding: '14px 24px',
             borderTop: isDarkMode ? '1px solid #1f293d' : '1px solid #f1f5f9',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            maxWidth: 1600,
-            width: '100%',
-            margin: '0 auto',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
             <span
               style={{
                 width: 7,

@@ -355,7 +355,7 @@ const LeaveManagement = () => {
 
       {/* Filter Card */}
       <Card className="glass-card" bodyStyle={{ padding: 14 }}>
-        <Space wrap size={12}>
+        <div className="filter-bar-responsive">
           <Select
             placeholder="All Statuses"
             value={statusFilter || undefined}
@@ -364,7 +364,7 @@ const LeaveManagement = () => {
               setPage(1);
             }}
             allowClear
-            style={{ width: 160 }}
+            style={{ minWidth: 160, flex: '1 1 160px' }}
           >
             <Option value="Pending">Pending Review</Option>
             <Option value="Approved">Approved</Option>
@@ -380,14 +380,14 @@ const LeaveManagement = () => {
               setPage(1);
             }}
             allowClear
-            style={{ width: 180 }}
+            style={{ minWidth: 180, flex: '1 1 180px' }}
           >
             <Option value="Casual Leave">Casual Leave</Option>
             <Option value="Sick Leave">Sick Leave</Option>
             <Option value="Earned Leave">Earned Leave</Option>
             <Option value="Work From Home">Work From Home</Option>
           </Select>
-        </Space>
+        </div>
       </Card>
 
       {/* Leave Requests Table */}
@@ -397,6 +397,7 @@ const LeaveManagement = () => {
           dataSource={leaves}
           rowKey="_id"
           loading={loading}
+          scroll={{ x: 700 }}
           pagination={{
             current: page,
             pageSize: 10,
@@ -413,6 +414,7 @@ const LeaveManagement = () => {
         open={applyModalOpen}
         onCancel={() => setApplyModalOpen(false)}
         footer={null}
+        width="min(520px, calc(100vw - 24px))"
       >
         <Form form={form} layout="vertical" onFinish={handleApply} style={{ marginTop: 12 }}>
           <Form.Item
@@ -468,6 +470,7 @@ const LeaveManagement = () => {
         confirmLoading={actionLoading}
         okText="Confirm Rejection"
         okButtonProps={{ danger: true }}
+        width="min(460px, calc(100vw - 24px))"
       >
         <p style={{ marginBottom: 8, fontSize: 13, color: '#64748b' }}>
           Please enter the reason for rejecting this leave application:

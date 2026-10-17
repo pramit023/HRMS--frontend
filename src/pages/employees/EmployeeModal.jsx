@@ -424,7 +424,7 @@ const EmployeeModal = ({ open, onClose, employee, onSuccess }) => {
       onCancel={onClose}
       onOk={handleSubmit}
       confirmLoading={loading}
-      width={720}
+      width="min(720px, calc(100vw - 24px))"
       okText={employee ? 'Save Changes' : 'Create Employee'}
     >
       <Form form={form} layout="vertical" style={{ marginTop: 12 }}>
